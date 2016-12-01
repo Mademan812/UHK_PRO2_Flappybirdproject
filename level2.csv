@@ -1,0 +1,17 @@
+5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+W;Wall;256;0;16;16;http://chrischung.com/art/sprites/wall_of_love_sprites_2.png;;;;;;;;;;;;;;;;;;;;;;;;;;
+U;Wall;208;64;16;16;http://chrischung.com/art/sprites/wall_of_love_sprites_2.png;;;;;;;;;;;;;;;;;;;;;;;;;;
+T;Wall;256;160;16;16;http://chrischung.com/art/sprites/wall_of_love_sprites_2.png;;;;;;;;;;;;;;;;;;;;;;;;;;
+B;Bonus;128;144;16;16;http://chrischung.com/art/sprites/wall_of_love_sprites_2.png;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Empty;256;192;16;16;http://chrischung.com/art/sprites/wall_of_love_sprites_2.png;;;;;;;;;;;;;;;;;;;;;;;;;;
+10;33;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;w;;;;;w;;;;W;;;;W;;W;;;w;w;;;;w;;;W
+;;;;;;w;;;;;w;;;;W;;;;W;;W;;;w;w;;;;w;;;W
+;;;;;;w;;;;;;;;;W;;;;;;W;;;;w;;;;w;;;W
+;;;;;;w;;;;;;;;;W;;;;;;w;;;;;;;;w;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;w;;;
+;;;;;;;;;;;W;;;;;;;;w;;;;;W;;;;;;;;
+;;;;;;;;;;;W;;;;;;;;W;;;;;W;;;;;;;;W
+;;;;;;w;;;;;W;;;;;;;;W;;;;;W;W;;;;;;;W
+;;;;;;w;;;;;W;;;;W;;;;W;;W;;;W;W;;;;;;;W
+T;T;T;T;T;U;w;U;t;U;U;W;T;T;T;W;U;U;U;W;T;W;U;U;W;W;T;T;T;U;U;U;W
