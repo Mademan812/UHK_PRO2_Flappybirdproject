@@ -2,6 +2,8 @@ package cz.uhk.pro2.flappy_bird.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.geom.Ellipse2D;
 
 public class Bird implements TickAware {
 	
@@ -20,9 +22,12 @@ public class Bird implements TickAware {
 	//ticks between starting to fall after raising
 	int ticksToFall = 0;
 	
-	public Bird(int initX, int initY){
-		this.viewportX = initX;
-		this.viewportY = initY;
+	Image imageOfTheBird;
+	
+	public Bird(int initialX, int initialY, Image imageOfTheBird) {
+		this.viewportX = initialX;
+		this.viewportY = initialY;
+		this.imageOfTheBird = imageOfTheBird;
 	}
 	
 	public void changeVelocity(){
@@ -38,6 +43,19 @@ public class Bird implements TickAware {
 		g.setColor(Color.BLACK);
 		g.drawString(viewportX+", "+viewportY, viewportX, (int)viewportY);
 	}
+	
+	public boolean collidesWithRectangle(int x, int y, int w, int h){
+		// vytvorime kruznici (jako objekt) reprezentujici obrys ptaka
+		//TODO vytvaret birdBoundery jen kdyz je potreba
+		Ellipse2D.Float birdBoundery = new Ellipse2D.Float((int)viewportX - Tile.SIZE/2, (int)viewportY - Tile.SIZE/2, Tile.SIZE, Tile.SIZE);
+		// otestujeme, jestli ptak koliduje s obdelnikem zadanym parametry
+		return birdBoundery.intersects(x, y, w, h);		
+	}	
+	
+	public Image getImageOfTheBird() {
+		return imageOfTheBird;
+	}
+
 	
 	@Override
 	public void tick(long ticksSinceStart) {

@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	public MainWindow(){
-		try(InputStream is = new FileInputStream("level2.csv")){
+		try(InputStream is = new FileInputStream("flappy-level.csv")){
 			WorldLoader loader = new CsvWorldLoader(is);
 			world = loader.loadLevel();
 		} catch (FileNotFoundException e1) {

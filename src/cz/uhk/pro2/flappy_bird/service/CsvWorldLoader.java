@@ -45,7 +45,9 @@ public class CsvWorldLoader implements WorldLoader {
 				int spriteSizeX = Integer.parseInt(line[4]);
 				int spriteSizeY = Integer.parseInt(line[5]);
 				String spriteURL = line[6];
-				Tile tile = createTile(tileType, spriteStartX, spriteStartY, spriteSizeX, spriteSizeY,spriteURL);
+				String referencedTileType = (line.length >= 8) ? line[7] : "";
+				Tile referencedTile = tileTypes.get(referencedTileType);
+				Tile tile = createTile(tileType, spriteStartX, spriteStartY, spriteSizeX, spriteSizeY,spriteURL, referencedTile);
 				tileTypes.put(tileShort, tile);
 			}
 			line = br.readLine().split(";");
@@ -64,7 +66,7 @@ public class CsvWorldLoader implements WorldLoader {
 				}
 			}
 			
-			World world = new World(tiles/*, imageOfTheBird*/);
+			World world = new World(tiles, imageOfTheBird);
 			return world;
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException("Nepodporovane kodovani souboru", e);
@@ -73,7 +75,7 @@ public class CsvWorldLoader implements WorldLoader {
 		}
 	}
 
-	private Tile createTile(String tileType, int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url) throws IOException {
+	private Tile createTile(String tileType, int spriteX, int spriteY, int spriteWidth, int spriteHeight, String url, Tile referencedTile) throws IOException {
 		// nacist obrazek z URL
 		BufferedImage originalImage = ImageIO.read(new URL(url));
 		// vyriznout z obrazku sprite podle x,y, a sirka vyska
@@ -90,7 +92,7 @@ public class CsvWorldLoader implements WorldLoader {
 		case "Bonus":
 			return new WallTile(resizedImage); // TODO dodelat dlazdici typu bonus
 		case "Empty":
-			return new EmptyTile(resizedImage);  
+			return new EmptyTile(resizedImage);
 		default:
 			throw new RuntimeException("Neznama trida dlazdice " + tileType);
 		}
