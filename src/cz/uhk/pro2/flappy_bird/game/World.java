@@ -11,10 +11,8 @@ public class World implements TickAware {
 	int j2;
 	Bird bird;
 	
-	public World(){
-		tiles = new Tile[20][20]; // TODO
-		tiles[2][1] = new WallTile();
-		bird = new Bird(viewportWidth/2, tiles.length*Tile.SIZE/2);
+	public void setViewportWidth(int viewportWidth/*, Image imageOfTheBird*/) {
+		this.viewportWidth = viewportWidth;
 	}
 	
 	public World(Tile[][] tiles){
