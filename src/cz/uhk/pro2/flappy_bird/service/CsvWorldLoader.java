@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,9 +47,14 @@ public class CsvWorldLoader implements WorldLoader {
 				int spriteSizeY = Integer.parseInt(line[5]);
 				String spriteURL = line[6];
 				String referencedTileType = (line.length >= 8) ? line[7] : "";
-				Tile referencedTile = tileTypes.get(referencedTileType);
-				Tile tile = createTile(tileType, spriteStartX, spriteStartY, spriteSizeX, spriteSizeY,spriteURL, referencedTile);
-				tileTypes.put(tileShort, tile);
+				if(tileType.equals("Bird")){
+					//special birdie's sprite creation
+					imageOfTheBird = getImage(spriteStartX, spriteStartY, spriteSizeX, spriteSizeY, spriteURL);
+				}else{
+					Tile referencedTile = tileTypes.get(referencedTileType);
+					Tile tile = createTile(tileType, spriteStartX, spriteStartY, spriteSizeX, spriteSizeY,spriteURL, referencedTile);
+					tileTypes.put(tileShort, tile);
+				}
 			}
 			line = br.readLine().split(";");
 			int rows = Integer.parseInt(line[0]);
@@ -97,5 +103,18 @@ public class CsvWorldLoader implements WorldLoader {
 			throw new RuntimeException("Neznama trida dlazdice " + tileType);
 		}
 	}
-
+	
+	private BufferedImage getImage(int spriteStartX, int spriteStartY, int spriteSizeX, int spriteSizeY, String spriteURL)
+			throws IOException, MalformedURLException {
+		// load picture from URL
+		BufferedImage originalImage = ImageIO.read(new URL(spriteURL));
+		//cut the sprite by starting x, starting y, width and height
+		BufferedImage croppedImage = originalImage.getSubimage(spriteStartX, spriteStartY, spriteSizeX, spriteSizeY);
+		//fit the sprite to tile
+		BufferedImage resizedImage = new BufferedImage(Tile.SIZE, Tile.SIZE, BufferedImage.TYPE_INT_RGB);
+		// TODO nastavit parametry pro scaling
+		Graphics2D g = (Graphics2D) resizedImage.getGraphics();
+		g.drawImage(croppedImage, 0, 0, Tile.SIZE, Tile.SIZE, null);
+		return resizedImage;
+	}
 }

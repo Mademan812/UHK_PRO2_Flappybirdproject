@@ -17,7 +17,7 @@ public class World implements TickAware {
 	Bird bird;
 	boolean gameOver;
 	
-	public void setViewportWidth(int viewportWidth/*, Image imageOfTheBird*/) {
+	public void setViewportWidth(int viewportWidth, Image imageOfTheBird) {
 		this.viewportWidth = viewportWidth;
 	}
 	
@@ -31,21 +31,43 @@ public class World implements TickAware {
 	 * 
 	 * @param g
 	 */
-	public void draw(Graphics g){
-		int minJ = shift/Tile.SIZE; //counts the index of first cell to be drawn (is visible)
-		int maxJ = minJ + viewportWidth/Tile.SIZE + 2; //+2 cuz integer dividing shift and viewportWidth
+	public void drawAndDetectCollisions(Graphics g){
+		int minJ = shift/Tile.SIZE; //index of the first tile to draw
+		//how many tile to fill viewport width  +2 because dividing
+		int countJ = viewportWidth/Tile.SIZE + 2;
 		for(int i = 0; i < tiles.length; i++){
-			for(int j = minJ; j < maxJ; j++){
-				j2 = j % tiles[i].length; //j2 makes cycling happen
-				Tile t = tiles[i][j2];
+			for(int j = minJ; j <= minJ+countJ; j++){
+				//world infinite rotation thanks to %
+				int modJ = j % tiles[0].length; 
+				Tile t = tiles[i][modJ];
 				if(t != null){
-					int screenX = (j * Tile.SIZE) - shift;
-					int screenY = i * Tile.SIZE;
-					t.draw(g, screenX, screenY);
+					//There is a tile -> draw it
+					int viewportX = j * Tile.SIZE - shift;
+					int viewportY = i * Tile.SIZE;
+					if(j == minJ + countJ){
+						if(t instanceof BonusTile){
+							((BonusTile) t).setActive(true);
+						}
+					}
+					t.draw(g, viewportX, viewportY);
+					// test collision
+					if (t instanceof WallTile){ // T = wall
+						// test if tile T collides with the birdie
+						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
+							gameOver = true; // collision detected -> end the game
+						}
+					} else if(t instanceof BonusTile){
+						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
+							if(((BonusTile) t).isActive()) points++;
+							((BonusTile) t).setActive(false);
+						}
+					}
 				}
 			}
 		}
-		//birdie
+		g.setColor(new Color(0xff0000));
+		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		g.drawString("" + points, 5, 20);
 		bird.draw(g);
 	}
 
@@ -66,50 +88,6 @@ public class World implements TickAware {
 	
 	public void changeBirdiesVelocity(){
 		bird.changeVelocity();
-	}
-	
-	public void drawAndDetectCollisions(Graphics g){
-		int minJ = shift/Tile.SIZE; //j-souradnice prvni dlazdice vlevo kterou je nutne kreslit
-		//pocet dlazdic (na sirku), kolik je nutne kreslit (do viewportu)
-		// + 2 protoze muze chybet cast bunky vlevo a vpravo kvuli obema celociselnym delenim
-		int countJ = viewportWidth/Tile.SIZE + 2;
-		for(int i = 0; i < tiles.length; i++){
-			for(int j = minJ; j <= minJ+countJ; j++){
-				//chceme aby level bezel porad dokola, takze modJ se 
-				//na konci pole vraci zase na 0; tile[0].length je pocet sloupcu
-				int modJ = j % tiles[0].length; 
-				Tile t = tiles[i][modJ];
-				if(t != null){
-					//v bunce je nejaka dlazdice
-					//vykreslime ji
-					int viewportX = j * Tile.SIZE - shift;
-					int viewportY = i * Tile.SIZE;
-					if(j == minJ + countJ){
-						if(t instanceof BonusTile){
-							((BonusTile) t).setActive(true);//TODO bonus tile
-						}
-					}
-					t.draw(g, viewportX, viewportY);
-					// otestujeme moznou kolizi dlazdice s ptakem
-					if (t instanceof WallTile){
-						// t je zed
-						// otestujeme, jestli dlazdice t koliduje s ptakem
-						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
-							gameOver = true; // doslo ke kolizi, hra ma skoncit
-						}
-					} else if(t instanceof BonusTile){
-						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
-							if(((BonusTile) t).isActive()) points++;
-							((BonusTile) t).setActive(false);
-						}
-					}
-				}
-			}
-		}
-		g.setColor(new Color(0xff0000));
-		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-		g.drawString("" + points, 5, 20);
-		bird.draw(g);
 	}
 	
 	public void reset(){

@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
 		@Override
 		public void paint(Graphics g){
 			super.paint(g); //draws plain panel
-			world.draw(g); //draws the world
+			world.drawAndDetectCollisions(g); //draws the world
 		}
 	}
 	
