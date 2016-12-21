@@ -33,12 +33,11 @@ public class World implements TickAware {
 	 */
 	public void drawAndDetectCollisions(Graphics g){
 		int minJ = shift/Tile.SIZE; //index of the first tile to draw
-		//how many tile to fill viewport width  +2 because dividing
-		int countJ = viewportWidth/Tile.SIZE + 2;
+		int countJ = viewportWidth/Tile.SIZE + 2; //how many tile to fill viewport width  +2 because dividing
 		for(int i = 0; i < tiles.length; i++){
 			for(int j = minJ; j <= minJ+countJ; j++){
 				//world infinite rotation thanks to %
-				int modJ = j % tiles[0].length; 
+				int modJ = j % tiles[0].length;
 				Tile t = tiles[i][modJ];
 				if(t != null){
 					//There is a tile -> draw it
@@ -47,6 +46,7 @@ public class World implements TickAware {
 					if(j == minJ + countJ){
 						if(t instanceof BonusTile){
 							((BonusTile) t).setActive(true);
+							System.out.println("mrkda");
 						}
 					}
 					t.draw(g, viewportX, viewportY);
@@ -60,6 +60,7 @@ public class World implements TickAware {
 						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
 							if(((BonusTile) t).isActive()) points++;
 							((BonusTile) t).setActive(false);
+							System.out.println("something");
 						}
 					}
 				}

@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import cz.uhk.pro2.flappy_bird.game.Tile;
 import cz.uhk.pro2.flappy_bird.game.World;
+import cz.uhk.pro2.flappy_bird.game.tiles.BonusTile;
 import cz.uhk.pro2.flappy_bird.game.tiles.EmptyTile;
 import cz.uhk.pro2.flappy_bird.game.tiles.WallTile;
 
@@ -96,7 +97,7 @@ public class CsvWorldLoader implements WorldLoader {
 		case "Wall":
 			return new WallTile(resizedImage);
 		case "Bonus":
-			return new WallTile(resizedImage); // TODO dodelat dlazdici typu bonus
+			return new BonusTile(resizedImage, referencedTile);
 		case "Empty":
 			return new EmptyTile(resizedImage);
 		default:
