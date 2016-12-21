@@ -46,7 +46,6 @@ public class World implements TickAware {
 					if(j == minJ + countJ){
 						if(t instanceof BonusTile){
 							((BonusTile) t).setActive(true);
-							System.out.println("mrkda");
 						}
 					}
 					t.draw(g, viewportX, viewportY);
@@ -60,7 +59,6 @@ public class World implements TickAware {
 						if (bird.collidesWithRectangle(viewportX, viewportY, Tile.SIZE, Tile.SIZE)){
 							if(((BonusTile) t).isActive()) points++;
 							((BonusTile) t).setActive(false);
-							System.out.println("something");
 						}
 					}
 				}
