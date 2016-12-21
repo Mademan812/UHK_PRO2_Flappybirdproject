@@ -32,10 +32,10 @@ public class World implements TickAware {
 	 * @param g
 	 */
 	public void drawAndDetectCollisions(Graphics g){
-		int minJ = shift/Tile.SIZE; //index of the first tile to draw
-		int countJ = viewportWidth/Tile.SIZE + 2; //how many tile to fill viewport width  +2 because dividing
+		int firstTileIndex = shift/Tile.SIZE; //index of the first tile to draw
+		int tilesPerViewport = viewportWidth/Tile.SIZE + 2; //how many tile to fill viewport width  +2 because dividing
 		for(int i = 0; i < tiles.length; i++){
-			for(int j = minJ; j <= minJ+countJ; j++){
+			for(int j = firstTileIndex; j <= firstTileIndex + tilesPerViewport; j++){
 				//world infinite rotation thanks to %
 				int modJ = j % tiles[0].length;
 				Tile t = tiles[i][modJ];
@@ -43,7 +43,7 @@ public class World implements TickAware {
 					//There is a tile -> draw it
 					int viewportX = j * Tile.SIZE - shift;
 					int viewportY = i * Tile.SIZE;
-					if(j == minJ + countJ){
+					if(j == firstTileIndex + tilesPerViewport){
 						if(t instanceof BonusTile){
 							((BonusTile) t).setActive(true);
 						}
